@@ -13,7 +13,7 @@ export const userLoginAPI = async (data: LoginData): Promise<AuthResponse> => {
   return response.data;
 };
 
-export const userSignupAPI = async (data: UserData): Promise<User> => {
+export const userSignupAPI = async (data: UserData): Promise<AuthResponse> => {
   const path = "v1/auth/signup";
 
   const response = await axiosInstance.post(path, data);

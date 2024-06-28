@@ -18,7 +18,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { userLogin } from "../store/authSlice";
-import { useDispatch } from "../store/reduxHooks";
+import { useDispatch, useSelector } from "../store/reduxHooks";
 import { validateLogin } from "../validations/validateLogin";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { LoginData } from "../shared/interfaces/auth/login.interface";
@@ -26,6 +26,7 @@ import { LoginData } from "../shared/interfaces/auth/login.interface";
 export default function UserLogin(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticating } = useSelector((s) => s.auth);
 
   const [formData, setData] = useState<LoginData>({} as LoginData);
   const [errors, setErrors] = useState<LoginData>({} as LoginData);
@@ -38,9 +39,16 @@ export default function UserLogin(): JSX.Element {
 
     setData((prev: LoginData) => ({ ...prev, [name]: value }));
 
-    const updatedData = { ...formData, [name]: value };
-    const { errs } = validateLogin(updatedData);
-    setErrors(errs);
+    const { errs } = validateLogin({ ...formData, [name]: value });
+
+    if (errs[name as keyof LoginData]) {
+      setErrors((prev: LoginData) => ({
+        ...prev,
+        [name]: errs[name as keyof LoginData],
+      }));
+    } else {
+      setErrors({} as LoginData);
+    }
   };
 
   const onUserLogin = async () => {
@@ -132,8 +140,7 @@ export default function UserLogin(): JSX.Element {
               )}
 
               <Button
-                type="submit"
-                // isDisabled={formik.isSubmitting}
+                isLoading={isAuthenticating}
                 onClick={onUserLogin}
                 bg={"blue.400"}
                 color={"white"}

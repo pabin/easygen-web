@@ -5,7 +5,7 @@ import LandingPage from "../pages/Landing";
 import UserSignUp from "../pages/UserSignUp";
 import NotFound from "../components/errors/NotFound";
 
-const PublicRoutes = () => {
+const PublicRoutes = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />

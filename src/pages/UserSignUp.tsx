@@ -18,24 +18,19 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { UserData } from "../shared/interfaces/auth/signup.interface";
-import { useDispatch } from "../store/reduxHooks";
+import { useDispatch, useSelector } from "../store/reduxHooks";
 import { validateUser } from "../validations/validateUser";
-import { userSignupAPI } from "../api/authAPI";
-import { userLogin } from "../store/authSlice";
-import { LoginData } from "../shared/interfaces/auth/login.interface";
-import axios from "axios";
+import { userSignup } from "../store/authSlice";
 
-export default function UserSignUp() {
+export default function UserSignUp(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticating } = useSelector((s) => s.auth);
 
   const [formData, setData] = useState<UserData>({} as UserData);
   const [errors, setErrors] = useState<UserData>({} as UserData);
   const [signupError, setSignupError] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  console.log("formData", formData);
-  console.log("errors", errors);
 
   const onFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -43,33 +38,27 @@ export default function UserSignUp() {
 
     setData((prev: UserData) => ({ ...prev, [name]: value }));
 
-    const updatedData = { ...formData, [name]: value };
-    const { errs } = validateUser(updatedData);
-    setErrors(errs);
-    // errs[name] ? setErrors({ [name]: errs[name] }) : setErrors({});
+    const { errs } = validateUser({ ...formData, [name]: value });
+
+    if (errs[name as keyof UserData]) {
+      setErrors((prev: UserData) => ({
+        ...prev,
+        [name]: errs[name as keyof UserData],
+      }));
+    } else {
+      setErrors({} as UserData);
+    }
   };
 
   const onUserSignup = async () => {
     const { isValid, errs } = validateUser(formData);
-    console.log("errs", errs);
 
     if (isValid) {
-      try {
-        await userSignupAPI(formData);
-        const loginData: LoginData = {
-          email: formData.email,
-          password: formData.password,
-        };
-        const response: any = await dispatch(userLogin(loginData));
-        if (response.meta.requestStatus === "fulfilled") {
-          navigate("/dashboard", { replace: true });
-        }
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          console.log("err signup", JSON.stringify(err.response?.data.message));
-
-          setSignupError(err.response?.data.message);
-        }
+      const response: any = await dispatch(userSignup(formData));
+      if (response.meta.requestStatus === "fulfilled") {
+        navigate("/dashboard", { replace: true });
+      } else if (response.meta.requestStatus === "rejected") {
+        setSignupError(response.payload?.message);
       }
     } else {
       setErrors(errs);
@@ -199,6 +188,7 @@ export default function UserSignUp() {
 
             <Stack spacing={10} pt={2}>
               <Button
+                isLoading={isAuthenticating}
                 onClick={onUserSignup}
                 loadingText="Submitting"
                 size="lg"

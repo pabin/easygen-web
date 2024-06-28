@@ -1,7 +1,7 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 
-export default function Dashboard() {
+export default function Dashboard(): JSX.Element {
   return (
     <Flex p={8} flex={1} align={"center"} justify={"center"} minH={"80vh"}>
       <Box textAlign="center" py={10} px={6}>

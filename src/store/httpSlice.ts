@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../config/httpClient";
+import { HttpClient } from "../shared/interfaces/httpClient/httpSlice.interface";
 
-const initHttpClientWithToken = (token: string): any => {
+const initHttpClientWithToken = (token: string): AxiosInstance => {
   if (token) {
     axiosInstance.interceptors.request.use(
       (config) => {
@@ -16,11 +17,6 @@ const initHttpClientWithToken = (token: string): any => {
   }
   return axiosInstance;
 };
-
-export interface HttpClient {
-  client: any;
-  token: boolean;
-}
 
 const initialState: HttpClient = {
   client: axios,

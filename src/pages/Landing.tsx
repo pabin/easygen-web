@@ -12,7 +12,7 @@ import { NavLink } from "react-router-dom";
 
 import hero from "../assets/images/hero.jpg";
 
-export default function LandingPage() {
+export default function LandingPage(): JSX.Element {
   return (
     <Stack minH={"80vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>

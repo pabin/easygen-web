@@ -5,7 +5,7 @@ import Dashboard from "../pages/Dashboard";
 import UserProfile from "../pages/UserProfile";
 import NotFound from "../components/errors/NotFound";
 
-const PrivateRoutes = () => {
+const PrivateRoutes = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
