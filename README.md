@@ -32,8 +32,7 @@ yarn start
 
 
 ### Demo VIDEO
-https://drive.google.com/file/d/1WrP9lhHo2yiF5qZOLoNv_6lM8rBGXHki/view?usp=drive_link
-
+https://drive.google.com/file/d/1JalfbJTIbTSJjbWwzFb0z-YJhC6H1RzK/view?usp=sharing
 
 ### TO DO
 - Unit tests:
