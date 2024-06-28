@@ -13,6 +13,7 @@ const schema = yup.object().shape({
     .string()
     .required("Password is required")
     .matches(
+      // eslint-disable-next-line no-useless-escape
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
       "Password must be at least 8 Characters, contain at least one uppercase, one lowercase, one number and one special character"
     ),

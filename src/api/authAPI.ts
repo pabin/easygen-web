@@ -1,8 +1,5 @@
 import axiosInstance from "../config/httpClient";
-import {
-  AuthResponse,
-  User,
-} from "../shared/interfaces/auth/authUser.interface";
+import { AuthResponse } from "../shared/interfaces/auth/authUser.interface";
 import { LoginData } from "../shared/interfaces/auth/login.interface";
 import { UserData } from "../shared/interfaces/auth/signup.interface";
 

@@ -3,7 +3,6 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
   Stack,
   Text,
   useBreakpointValue,

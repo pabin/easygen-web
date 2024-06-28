@@ -43,6 +43,7 @@ function App() {
 
   useEffect(() => {
     getAuthUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -67,6 +68,7 @@ function App() {
         clearTimeout(refreshTimerId);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, authUser]);
 
   return (
