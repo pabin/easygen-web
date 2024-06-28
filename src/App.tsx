@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
+import { jwtDecode } from "jwt-decode";
 
 import PublicRoutes from "./routes/PublicRoutes";
 import LayoutContainer from "./components/layout";
@@ -8,7 +9,6 @@ import PrivateRoutes from "./routes/PrivateRotues";
 import { removeClient, setClient } from "./store/httpSlice";
 import { AuthResponse } from "./shared/interfaces/auth/authUser.interface";
 import { logout, refreshToken, setAuthUser } from "./store/authSlice";
-import { jwtDecode } from "jwt-decode";
 
 function App() {
   const { isAuthenticated, authUser } = useSelector((s) => s.auth);
