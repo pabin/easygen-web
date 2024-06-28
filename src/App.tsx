@@ -36,8 +36,6 @@ function App() {
   };
 
   const refreshAccessToken = async () => {
-    console.log("==>> refreshing the token...", new Date());
-    console.log(new Date());
     await dispatch(refreshToken(authUser.refreshToken));
   };
 
@@ -55,7 +53,6 @@ function App() {
       if (decoded.exp) {
         const expiresIn = new Date(decoded.exp).getTime();
         const refreshIn = expiresIn * 1000 - Date.now() - 60 * 1000; // 1 minute before expiration
-        console.log("refreshIn in min...", refreshIn / 60000);
 
         refreshTimerId = setTimeout(() => {
           refreshAccessToken();
