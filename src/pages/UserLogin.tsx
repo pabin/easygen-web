@@ -37,6 +37,10 @@ export default function UserLogin(): JSX.Element {
     const name = e.target.name;
 
     setData((prev: LoginData) => ({ ...prev, [name]: value }));
+
+    const updatedData = { ...formData, [name]: value };
+    const { errs } = validateLogin(updatedData);
+    setErrors(errs);
   };
 
   const onUserLogin = async () => {

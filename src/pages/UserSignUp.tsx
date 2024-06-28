@@ -12,18 +12,72 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { UserData } from "../shared/interfaces/auth/signup.interface";
+import { useDispatch } from "../store/reduxHooks";
+import { validateUser } from "../validations/validateUser";
+import { userSignupAPI } from "../api/authAPI";
+import { userLogin } from "../store/authSlice";
+import { LoginData } from "../shared/interfaces/auth/login.interface";
+import axios from "axios";
 
 export default function UserSignUp() {
-  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const [formData, setData] = useState<UserData>({} as UserData);
+  const [errors, setErrors] = useState<UserData>({} as UserData);
+  const [signupError, setSignupError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  console.log("formData", formData);
+  console.log("errors", errors);
+
+  const onFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    setData((prev: UserData) => ({ ...prev, [name]: value }));
+
+    const updatedData = { ...formData, [name]: value };
+    const { errs } = validateUser(updatedData);
+    setErrors(errs);
+    // errs[name] ? setErrors({ [name]: errs[name] }) : setErrors({});
+  };
+
+  const onUserSignup = async () => {
+    const { isValid, errs } = validateUser(formData);
+    console.log("errs", errs);
+
+    if (isValid) {
+      try {
+        await userSignupAPI(formData);
+        const loginData: LoginData = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const response: any = await dispatch(userLogin(loginData));
+        if (response.meta.requestStatus === "fulfilled") {
+          navigate("/dashboard", { replace: true });
+        }
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log("err signup", JSON.stringify(err.response?.data.message));
+
+          setSignupError(err.response?.data.message);
+        }
+      }
+    } else {
+      setErrors(errs);
+    }
+  };
   return (
     <Flex
-      minH={"100vh"}
+      minH={"80vh"}
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
@@ -46,26 +100,57 @@ export default function UserSignUp() {
           <Stack spacing={4}>
             <HStack>
               <Box>
-                <FormControl id="firstName" isRequired>
+                <FormControl
+                  id="firstName"
+                  isRequired
+                  isInvalid={"firstName" in errors}
+                >
                   <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    name="firstName"
+                    onChange={onFormChange}
+                    value={formData.firstName}
+                  />
+                  <FormErrorMessage>{errors.firstName}</FormErrorMessage>
                 </FormControl>
               </Box>
               <Box>
-                <FormControl id="lastName">
+                <FormControl id="lastName" isInvalid={"lastName" in errors}>
                   <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    name="lastName"
+                    onChange={onFormChange}
+                    value={formData.lastName}
+                  />
+                  <FormErrorMessage>{errors.lastName}</FormErrorMessage>
                 </FormControl>
               </Box>
             </HStack>
-            <FormControl id="email" isRequired>
+            <FormControl id="email" isRequired isInvalid={"email" in errors}>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                name="email"
+                onChange={onFormChange}
+                value={formData.email}
+              />
+              <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
-            <FormControl id="password" isRequired>
+            <FormControl
+              id="password"
+              isRequired
+              isInvalid={"password" in errors}
+            >
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  onChange={onFormChange}
+                  value={formData.password}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -77,11 +162,21 @@ export default function UserSignUp() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
+              <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
-            <FormControl id="password" isRequired>
+            <FormControl
+              id="password"
+              isRequired
+              isInvalid={"confirmPassword" in errors}
+            >
               <FormLabel>Confirm Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  onChange={onFormChange}
+                  value={formData.confirmPassword}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -93,9 +188,18 @@ export default function UserSignUp() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
+              <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
             </FormControl>
+
+            {signupError && (
+              <Text align={"center"} color="red" fontSize={"18px"}>
+                {signupError}
+              </Text>
+            )}
+
             <Stack spacing={10} pt={2}>
               <Button
+                onClick={onUserSignup}
                 loadingText="Submitting"
                 size="lg"
                 bg={"blue.400"}
