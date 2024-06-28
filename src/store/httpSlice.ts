@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../config/httpClient";
 import { HttpClient } from "../shared/interfaces/httpClient/httpSlice.interface";
@@ -19,7 +19,7 @@ const initHttpClientWithToken = (token: string): AxiosInstance => {
 };
 
 const initialState: HttpClient = {
-  client: axios,
+  client: axiosInstance,
   token: false,
 };
 

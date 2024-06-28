@@ -19,3 +19,10 @@ export const userSignupAPI = async (data: UserData): Promise<AuthResponse> => {
   const response = await axiosInstance.post(path, data);
   return response.data;
 };
+
+export const refreshTokenAPI = async (): Promise<AuthResponse> => {
+  const path = "v1/auth/refresh-token";
+
+  const response = await axiosInstance.post(path);
+  return response.data;
+};

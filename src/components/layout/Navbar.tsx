@@ -20,12 +20,22 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { useSelector } from "../../store/reduxHooks";
 import { NavLink } from "react-router-dom";
+
+import { useDispatch, useSelector } from "../../store/reduxHooks";
+import { logout } from "../../store/authSlice";
+import { removeClient } from "../../store/httpSlice";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
   const { isAuthenticated, authUser } = useSelector((s) => s.auth);
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(removeClient());
+    localStorage.clear();
+  };
 
   return (
     <Box>
@@ -79,6 +89,7 @@ export default function Navbar() {
               <Text fontSize={"md"}>Hi, {authUser.user.firstName}</Text>
               <Button
                 as={"a"}
+                onClick={onLogout}
                 fontSize={"md"}
                 fontWeight={400}
                 variant={"link"}

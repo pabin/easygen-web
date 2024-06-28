@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { userLoginAPI, userSignupAPI } from "../api/authAPI";
+import { refreshTokenAPI, userLoginAPI, userSignupAPI } from "../api/authAPI";
 import { setClient } from "./httpSlice";
 import { LoginData } from "../shared/interfaces/auth/login.interface";
 import { AuthSliceInitState } from "../shared/interfaces/auth/authslice.interface";
@@ -12,6 +12,7 @@ export const userLogin = createAsyncThunk(
   async (payload: LoginData, { dispatch, rejectWithValue }) => {
     try {
       const authUser = await userLoginAPI(payload);
+      localStorage.setItem("authUser", JSON.stringify(authUser));
       dispatch(setClient(authUser.accessToken));
       return authUser;
     } catch (err) {
@@ -27,6 +28,24 @@ export const userSignup = createAsyncThunk(
   async (payload: UserData, { dispatch, rejectWithValue }) => {
     try {
       const authUser = await userSignupAPI(payload);
+      localStorage.setItem("authUser", JSON.stringify(authUser));
+      dispatch(setClient(authUser.accessToken));
+      return authUser;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        return rejectWithValue(err.response?.data);
+      }
+    }
+  }
+);
+
+export const refreshToken = createAsyncThunk(
+  "auth/userSignup",
+  async (refreshToken: string, { dispatch, rejectWithValue }) => {
+    try {
+      const authUser = await refreshTokenAPI();
+      authUser.refreshToken = refreshToken;
+      localStorage.setItem("authUser", JSON.stringify(authUser));
       dispatch(setClient(authUser.accessToken));
       return authUser;
     } catch (err) {
@@ -86,6 +105,6 @@ export const authenticationSlice = createSlice({
   },
 });
 
-// export const { setAuthUser, logout } = authenticationSlice.actions;
+export const { setAuthUser, logout } = authenticationSlice.actions;
 
 export default authenticationSlice.reducer;
