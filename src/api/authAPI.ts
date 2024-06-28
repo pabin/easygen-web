@@ -1,13 +1,19 @@
 import axiosInstance from "../config/httpClient";
+import {
+  AuthResponse,
+  User,
+} from "../shared/interfaces/auth/authUser.interface";
+import { LoginData } from "../shared/interfaces/auth/login.interface";
+import { UserData } from "../shared/interfaces/auth/signup.interface";
 
-export const userLoginAPI = async (data: any) => {
+export const userLoginAPI = async (data: LoginData): Promise<AuthResponse> => {
   const path = "v1/auth/login";
 
   const response = await axiosInstance.post(path, data);
   return response.data;
 };
 
-export const userSignupAPI = async (data: any) => {
+export const userSignupAPI = async (data: UserData): Promise<User> => {
   const path = "v1/auth/signup";
 
   const response = await axiosInstance.post(path, data);

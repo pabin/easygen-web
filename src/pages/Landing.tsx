@@ -8,11 +8,13 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
+
 import hero from "../assets/images/hero.jpg";
 
 export default function LandingPage() {
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
+    <Stack minH={"80vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={6} w={"full"} maxW={"lg"}>
           <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
@@ -50,7 +52,7 @@ export default function LandingPage() {
                 bg: "blue.500",
               }}
             >
-              <Link href={"/signup"}>Enroll in 100+ courses</Link>
+              <NavLink to="/signup">Join Now</NavLink>
             </Button>
           </Stack>
         </Stack>

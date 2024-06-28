@@ -1,18 +1,15 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 
 export default function Dashboard() {
   return (
-    <Box textAlign="center" py={10} px={6}>
-      <CheckCircleIcon boxSize={"50px"} color={"green.500"} />
-      <Heading as="h2" size="xl" mt={6} mb={2}>
-        Welcome to the application.
-      </Heading>
-      <Text color={"gray.500"}>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua.
-      </Text>
-    </Box>
+    <Flex p={8} flex={1} align={"center"} justify={"center"} minH={"80vh"}>
+      <Box textAlign="center" py={10} px={6}>
+        <CheckCircleIcon boxSize={"50px"} color={"green.500"} />
+        <Heading as="h2" size="xl" mt={6} mb={2}>
+          Welcome to the application.
+        </Heading>
+      </Box>
+    </Flex>
   );
 }

@@ -13,7 +13,6 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
-  Link,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -21,10 +20,12 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useSelector } from "../../store/reduxHooks";
 import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const { isAuthenticated, authUser } = useSelector((s) => s.auth);
 
   return (
     <Box>
@@ -59,7 +60,7 @@ export default function Navbar() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            <Link href="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
@@ -68,34 +69,51 @@ export default function Navbar() {
         </Flex>
 
         <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
+          // flex={{ base: 1, md: 0 }}
+          // justify={"flex-end"}
           direction={"row"}
           spacing={6}
         >
-          <Button
-            as={"a"}
-            fontSize={"md"}
-            fontWeight={500}
-            variant={"link"}
-            href={"/login"}
-          >
-            <NavLink to="/login">Login</NavLink>
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"md"}
-            fontWeight={600}
-            color={"white"}
-            bg={"blue.400"}
-            href={"/signup"}
-            _hover={{
-              bg: "blue.300",
-            }}
-          >
-            <NavLink to="/signup">Sign Up</NavLink>
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <Text fontSize={"md"}>Hi, {authUser.user.firstName}</Text>
+              <Button
+                as={"a"}
+                fontSize={"md"}
+                fontWeight={400}
+                variant={"link"}
+                href={"#"}
+              >
+                <NavLink to="/">Logout</NavLink>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                as={"a"}
+                fontSize={"md"}
+                fontWeight={400}
+                variant={"link"}
+                href={"#"}
+              >
+                <NavLink to="/login">Login</NavLink>
+              </Button>
+              <Button
+                as={"a"}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"md"}
+                fontWeight={600}
+                color={"white"}
+                bg={"blue.400"}
+                href={"#"}
+                _hover={{
+                  bg: "blue.300",
+                }}
+              >
+                <NavLink to="/signup">Sign Up</NavLink>
+              </Button>
+            </>
+          )}
         </Stack>
       </Flex>
 
