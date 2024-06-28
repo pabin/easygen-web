@@ -11,6 +11,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      {/* <Route path="/" element={<UserLogin />} /> */}
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/login" element={<UserLogin />} />
       <Route path="/signup" element={<UserSignUp />} />
