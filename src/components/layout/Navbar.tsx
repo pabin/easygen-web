@@ -88,35 +88,25 @@ export default function Navbar() {
             <>
               <Text fontSize={"md"}>Hi, {authUser.user.firstName}</Text>
               <Button
-                as={"a"}
                 onClick={onLogout}
                 fontSize={"md"}
                 fontWeight={400}
                 variant={"link"}
-                href={"#"}
               >
                 <NavLink to="/">Logout</NavLink>
               </Button>
             </>
           ) : (
             <>
-              <Button
-                as={"a"}
-                fontSize={"md"}
-                fontWeight={400}
-                variant={"link"}
-                href={"#"}
-              >
+              <Button fontSize={"md"} fontWeight={400} variant={"link"}>
                 <NavLink to="/login">Login</NavLink>
               </Button>
               <Button
-                as={"a"}
                 display={{ base: "none", md: "inline-flex" }}
                 fontSize={"md"}
                 fontWeight={600}
                 color={"white"}
                 bg={"blue.400"}
-                href={"#"}
                 _hover={{
                   bg: "blue.300",
                 }}

@@ -96,6 +96,7 @@ export default function UserLogin(): JSX.Element {
                     name="email"
                     onChange={onFormChange}
                     value={formData.email}
+                    defaultValue={formData.email}
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
@@ -107,6 +108,7 @@ export default function UserLogin(): JSX.Element {
                       name="password"
                       onChange={onFormChange}
                       value={formData.password}
+                      defaultValue={formData.password}
                     />
                     <InputRightElement h={"full"}>
                       <Button
@@ -152,11 +154,9 @@ export default function UserLogin(): JSX.Element {
               </Button>
             </Stack>
             <Stack pt={6}>
-              <Text align={"center"}>
-                No User account ?{" "}
-                <Text color={"blue.400"}>
-                  <NavLink to="/signup">SignUp</NavLink>
-                </Text>
+              <Text align={"center"}>No User account ?</Text>
+              <Text fontSize={"18px"} color={"blue.400"} align={"center"}>
+                <NavLink to="/signup">SignUp</NavLink>
               </Text>
             </Stack>
           </Stack>

@@ -100,6 +100,7 @@ export default function UserSignUp(): JSX.Element {
                     name="firstName"
                     onChange={onFormChange}
                     value={formData.firstName}
+                    defaultValue={formData.firstName}
                   />
                   <FormErrorMessage>{errors.firstName}</FormErrorMessage>
                 </FormControl>
@@ -112,6 +113,7 @@ export default function UserSignUp(): JSX.Element {
                     name="lastName"
                     onChange={onFormChange}
                     value={formData.lastName}
+                    defaultValue={formData.lastName}
                   />
                   <FormErrorMessage>{errors.lastName}</FormErrorMessage>
                 </FormControl>
@@ -124,6 +126,7 @@ export default function UserSignUp(): JSX.Element {
                 name="email"
                 onChange={onFormChange}
                 value={formData.email}
+                defaultValue={formData.email}
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
@@ -139,6 +142,7 @@ export default function UserSignUp(): JSX.Element {
                   name="password"
                   onChange={onFormChange}
                   value={formData.password}
+                  defaultValue={formData.password}
                 />
                 <InputRightElement h={"full"}>
                   <Button
@@ -154,7 +158,7 @@ export default function UserSignUp(): JSX.Element {
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <FormControl
-              id="password"
+              id="confirm-password"
               isRequired
               isInvalid={"confirmPassword" in errors}
             >
@@ -165,6 +169,7 @@ export default function UserSignUp(): JSX.Element {
                   name="confirmPassword"
                   onChange={onFormChange}
                   value={formData.confirmPassword}
+                  defaultValue={formData.confirmPassword}
                 />
                 <InputRightElement h={"full"}>
                   <Button
@@ -202,11 +207,9 @@ export default function UserSignUp(): JSX.Element {
               </Button>
             </Stack>
             <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?
-                <Text color={"blue.400"}>
-                  <NavLink to="/login">Login</NavLink>
-                </Text>
+              <Text align={"center"}>Already a user?</Text>
+              <Text fontSize={"18px"} color={"blue.400"} align={"center"}>
+                <NavLink to="/login">Login</NavLink>
               </Text>
             </Stack>
           </Stack>
