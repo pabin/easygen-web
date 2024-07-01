@@ -2,8 +2,8 @@
 
 ### Clone Project Repository
 ```
-git clone https://github.com/pabin/easygen-web.git
-cd easygen-web
+git clone https://github.com/pabin/reactjs-auth-template.git
+cd reactjs-auth-template
 ```
 
 ### Setting up node and yarn
